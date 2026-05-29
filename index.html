@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YummyBakes – Artisan Cake Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #fdf6ec;
+    --blush: #f2c9b8;
+    --dusty-rose: #d4856a;
+    --warm-brown: #3d2314;
+    --caramel: #c6843e;
+    --soft-pink: #f7ddd3;
+    --text: #2a1810;
+    --muted: #8a6858;
+    --white: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5%;
+    background: rgba(253, 246, 236, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(212, 133, 106, 0.2);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px rgba(61, 35, 20, 0.08); }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--warm-brown);
+    letter-spacing: 0.03em;
+  }
+  .nav-logo span { color: var(--dusty-rose); font-style: italic; }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--dusty-rose); }
+
+  .nav-cta {
+    background: var(--warm-brown);
+    color: var(--cream) !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    transition: background 0.3s !important;
+  }
+  .nav-cta:hover { background: var(--dusty-rose) !important; color: white !important; }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--warm-brown);
+    transition: all 0.3s;
+    border-radius: 2px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 5% 4rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(242,201,184,0.4) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-text { animation: fadeUp 0.9s ease both; }
+
+  .hero-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dusty-rose);
+    background: var(--soft-pink);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+    font-family: 'Jost', sans-serif;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.1;
+    color: var(--warm-brown);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--dusty-rose);
+    display: block;
+  }
+
+  .hero p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 460px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--warm-brown);
+    color: var(--cream);
+    padding: 0.9rem 2rem;
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--dusty-rose); transform: translateY(-2px); }
+
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    border: 1.5px solid var(--dusty-rose);
+    color: var(--dusty-rose);
+    padding: 0.9rem 2rem;
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover { background: var(--dusty-rose); color: white; transform: translateY(-2px); }
+
+  .hero-visual {
+    position: relative;
+    animation: fadeUp 0.9s 0.2s ease both;
+  }
+
+  .hero-cake-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .cake-bg-circle {
+    position: absolute; inset: 5%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--soft-pink), var(--blush));
+  }
+
+  .cake-svg-container {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .floating-tag {
+    position: absolute;
+    background: white;
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    box-shadow: 0 8px 30px rgba(61,35,20,0.12);
+    animation: float 3s ease-in-out infinite;
+  }
+  .floating-tag.tag-1 { top: 10%; left: -5%; animation-delay: 0s; }
+  .floating-tag.tag-2 { bottom: 15%; right: -5%; animation-delay: 1.5s; }
+
+  .tag-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .tag-value { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--warm-brown); font-weight: 700; }
+
+  /* ── STATS ── */
+  .stats {
+    background: var(--warm-brown);
+    padding: 3rem 5%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--blush);
+    font-weight: 700;
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(253,246,236,0.6);
+    margin-top: 0.3rem;
+  }
+
+  /* ── SECTIONS COMMON ── */
+  section { padding: 6rem 5%; }
+
+  .section-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--dusty-rose);
+    margin-bottom: 0.8rem;
+    font-family: 'Jost', sans-serif;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--warm-brown);
+    line-height: 1.2;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+
+  /* ── MENU ── */
+  .menu { background: var(--white); }
+
+  .menu-header { text-align: center; margin-bottom: 4rem; }
+  .menu-header .section-sub { margin: 0 auto; }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .menu-card {
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    position: relative;
+  }
+  .menu-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(61,35,20,0.12); }
+
+  .menu-card-img {
+    height: 260px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-tag {
+    position: absolute; top: 1rem; right: 1rem;
+    background: var(--warm-brown);
+    color: var(--cream);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 2px;
+  }
+
+  .menu-card-body {
+    padding: 1.5rem;
+    background: var(--cream);
+  }
+  .menu-card-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--warm-brown);
+    margin-bottom: 0.4rem;
+  }
+  .menu-card-body p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .menu-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--dusty-rose);
+    font-weight: 700;
+  }
+  .order-btn {
+    background: none;
+    border: 1.5px solid var(--warm-brown);
+    color: var(--warm-brown);
+    padding: 0.45rem 1rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .order-btn:hover { background: var(--warm-brown); color: var(--cream); }
+
+  /* ── PROCESS ── */
+  .process { background: var(--soft-pink); }
+  .process-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .steps { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 2rem; }
+  .step { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--blush);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 3rem;
+  }
+  .step-content h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--warm-brown);
+    margin-bottom: 0.3rem;
+  }
+  .step-content p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+  .process-visual {
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--blush), var(--soft-pink));
+    border-radius: 4px;
+    min-height: 480px;
+    font-size: 8rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .process-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255,255,255,0.2) 10px,
+      rgba(255,255,255,0.2) 11px
+    );
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: var(--cream); }
+  .testimonials-header { text-align: center; margin-bottom: 4rem; }
+  .testimonials-header .section-sub { margin: 0 auto; }
+
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+  }
+  .review-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 4px;
+    position: relative;
+    border-top: 3px solid var(--blush);
+  }
+  .stars { color: var(--caramel); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+  .review-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .reviewer { display: flex; align-items: center; gap: 0.8rem; }
+  .reviewer-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    background: var(--soft-pink);
+  }
+  .reviewer-name { font-size: 0.85rem; font-weight: 500; color: var(--warm-brown); }
+  .reviewer-role { font-size: 0.75rem; color: var(--muted); }
+
+  /* ── GALLERY ── */
+  .gallery { background: var(--warm-brown); padding: 5rem 5%; }
+  .gallery-header { text-align: center; margin-bottom: 3rem; }
+  .gallery-header .section-eyebrow { color: var(--blush); }
+  .gallery-header .section-title { color: var(--cream); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 200px);
+    gap: 0.8rem;
+  }
+  .gallery-item {
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+    transition: transform 0.3s, filter 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+  }
+  .gallery-item:hover { transform: scale(1.03); filter: brightness(1.1); }
+  .gallery-item.big { grid-column: span 2; grid-row: span 2; font-size: 6rem; }
+  .g1 { background: linear-gradient(135deg, #e8b4a0, #d4856a); }
+  .g2 { background: linear-gradient(135deg, #f2c9b8, #e8a08a); }
+  .g3 { background: linear-gradient(135deg, #c6843e, #a0652a); }
+  .g4 { background: linear-gradient(135deg, #d4856a, #b06248); }
+  .g5 { background: linear-gradient(135deg, #f7ddd3, #f2c9b8); }
+
+  /* ── ORDER FORM ── */
+  .order { background: var(--soft-pink); }
+  .order-inner {
+    max-width: 700px; margin: 0 auto; text-align: center;
+  }
+  .order-form {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    text-align: left;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group.full { grid-column: span 2; }
+
+  .form-group label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'Jost', sans-serif;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--white);
+    border: 1.5px solid rgba(212,133,106,0.25);
+    border-radius: 2px;
+    padding: 0.75rem 1rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--dusty-rose);
+  }
+  textarea { resize: vertical; min-height: 100px; }
+
+  .form-submit {
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  .form-submit button {
+    background: var(--warm-brown);
+    color: var(--cream);
+    border: none;
+    padding: 1rem 3rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.3s, transform 0.2s;
+    width: 100%;
+  }
+  .form-submit button:hover { background: var(--dusty-rose); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1e0e08;
+    color: rgba(253,246,236,0.7);
+    padding: 4rem 5% 2rem;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  .footer-brand .nav-logo { color: var(--cream); margin-bottom: 1rem; display: block; }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.8; max-width: 280px; }
+  .footer-col h5 {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--blush); margin-bottom: 1.2rem; font-family: 'Jost', sans-serif;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col ul li a {
+    text-decoration: none; color: rgba(253,246,236,0.6);
+    font-size: 0.85rem; transition: color 0.3s;
+  }
+  .footer-col ul li a:hover { color: var(--blush); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(253,246,236,0.1);
+    padding-top: 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE NAV OVERLAY ── */
+  .mobile-nav {
+    display: none;
+    position: fixed; inset: 0; z-index: 99;
+    background: var(--cream);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a {
+    text-decoration: none;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--warm-brown);
+    transition: color 0.3s;
+  }
+  .mobile-nav a:hover { color: var(--dusty-rose); }
+  .close-nav {
+    position: absolute; top: 1.5rem; right: 5%;
+    background: none; border: none; font-size: 1.5rem;
+    cursor: pointer; color: var(--warm-brown);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .menu-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 7rem 5% 4rem;
+    }
+    .hero p { margin: 0 auto 2.5rem; }
+    .hero-actions { justify-content: center; }
+    .hero-visual { order: -1; }
+    .floating-tag { display: none; }
+
+    .menu-grid { grid-template-columns: 1fr; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+    .gallery-item.big { grid-column: span 2; font-size: 4rem; }
+
+    .process-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .process-visual { min-height: 300px; }
+
+    .order-form { grid-template-columns: 1fr; }
+    .form-group.full, .form-submit { grid-column: span 1; }
+
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 2.2rem; }
+    .btn-primary, .btn-outline { padding: 0.8rem 1.5rem; font-size: 0.78rem; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-item.big { grid-column: span 1; }
+    .stats { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Yummy<span>Bakes</span></div>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#process">Our Story</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#order" class="nav-cta">Order Now</a></li>
+  </ul>
+  <button class="hamburger" id="menuBtn" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="close-nav" id="closeNav">✕</button>
+  <a href="#menu" onclick="closeMobileNav()">Menu</a>
+  <a href="#process" onclick="closeMobileNav()">Our Story</a>
+  <a href="#gallery" onclick="closeMobileNav()">Gallery</a>
+  <a href="#order" onclick="closeMobileNav()">Order Now</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">✦ Handcrafted with Love</div>
+    <h1>Every Cake <em>Tells a Story</em></h1>
+    <p>Artisan cakes baked fresh for your most cherished moments. From wedding tiers to custom birthday creations — each layer crafted with intention.</p>
+    <div class="hero-actions">
+      <a href="#order" class="btn-primary">Order a Custom Cake →</a>
+      <a href="#menu" class="btn-outline">View Menu</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-cake-wrap">
+      <div class="cake-bg-circle"></div>
+      <div class="cake-svg-container">
+        <svg viewBox="0 0 280 300" xmlns="http://www.w3.org/2000/svg" width="78%" style="filter: drop-shadow(0 20px 40px rgba(61,35,20,0.2))">
+          <!-- Plate -->
+          <ellipse cx="140" cy="268" rx="110" ry="16" fill="#e8a07a" opacity="0.5"/>
+          <!-- Bottom tier -->
+          <rect x="30" y="200" width="220" height="68" rx="8" fill="#d4856a"/>
+          <rect x="30" y="200" width="220" height="20" rx="4" fill="#e8a08a"/>
+          <!-- Middle tier -->
+          <rect x="55" y="140" width="170" height="68" rx="8" fill="#c97555"/>
+          <rect x="55" y="140" width="170" height="18" rx="4" fill="#d4856a"/>
+          <!-- Top tier -->
+          <rect x="85" y="88" width="110" height="58" rx="8" fill="#b86245"/>
+          <rect x="85" y="88" width="110" height="16" rx="4" fill="#c97555"/>
+          <!-- Frosting drip bottom -->
+          <path d="M30,218 Q50,230 70,218 Q90,230 110,218 Q130,230 150,218 Q170,230 190,218 Q210,230 230,218 Q240,225 250,218" stroke="#f7ddd3" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Frosting drip middle -->
+          <path d="M55,156 Q75,168 95,156 Q115,168 135,156 Q155,168 175,156 Q195,168 215,156 Q220,162 225,156" stroke="#f2c9b8" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Frosting drip top -->
+          <path d="M85,102 Q100,114 115,102 Q130,114 145,102 Q160,114 175,102 Q185,108 195,102" stroke="#f7ddd3" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Flowers bottom tier -->
+          <circle cx="80" cy="234" r="8" fill="#f2c9b8"/>
+          <circle cx="80" cy="234" r="4" fill="#e8906a"/>
+          <circle cx="170" cy="228" r="6" fill="#f2c9b8"/>
+          <circle cx="200" cy="240" r="7" fill="#f7ddd3"/>
+          <circle cx="200" cy="240" r="3" fill="#e8906a"/>
+          <!-- Flowers middle tier -->
+          <circle cx="100" cy="172" r="7" fill="#f2c9b8"/>
+          <circle cx="100" cy="172" r="3.5" fill="#d4856a"/>
+          <circle cx="185" cy="168" r="6" fill="#f7ddd3"/>
+          <!-- Flowers top tier -->
+          <circle cx="120" cy="112" r="6" fill="#f2c9b8"/>
+          <circle cx="120" cy="112" r="3" fill="#d4856a"/>
+          <circle cx="160" cy="108" r="5" fill="#f7ddd3"/>
+          <!-- Candle -->
+          <rect x="132" y="62" width="16" height="30" rx="3" fill="#f2c9b8"/>
+          <ellipse cx="140" cy="62" rx="8" ry="4" fill="#e8a08a"/>
+          <!-- Flame -->
+          <ellipse cx="140" cy="53" rx="5" ry="9" fill="#f5c842" opacity="0.9"/>
+          <ellipse cx="140" cy="55" rx="3" ry="6" fill="#ff9820"/>
+          <!-- Stars -->
+          <text x="12" y="80" font-size="14" fill="#f2c9b8" opacity="0.6">✦</text>
+          <text x="248" y="130" font-size="10" fill="#f2c9b8" opacity="0.5">✦</text>
+          <text x="20" y="165" font-size="8" fill="#f2c9b8" opacity="0.4">✦</text>
+        </svg>
+      </div>
+      <div class="floating-tag tag-1">
+        <div class="tag-label">Fresh Daily</div>
+        <div class="tag-value">🌸 Handmade</div>
+      </div>
+      <div class="floating-tag tag-2">
+        <div class="tag-label">Starting from</div>
+        <div class="tag-value">₹899</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item reveal">
+    <span class="stat-num">1,200+</span>
+    <span class="stat-label">Cakes Crafted</span>
+  </div>
+  <div class="stat-item reveal">
+    <span class="stat-num">98%</span>
+    <span class="stat-label">Happy Clients</span>
+  </div>
+  <div class="stat-item reveal">
+    <span class="stat-num">8 yrs</span>
+    <span class="stat-label">Of Baking Joy</span>
+  </div>
+  <div class="stat-item reveal">
+    <span class="stat-num">42+</span>
+    <span class="stat-label">Flavour Options</span>
+  </div>
+</div>
+
+<!-- MENU -->
+<section class="menu" id="menu">
+  <div class="menu-header reveal">
+    <div class="section-eyebrow">Our Specialties</div>
+    <h2 class="section-title">A Taste for <em style="font-style:italic">Every Occasion</em></h2>
+    <p class="section-sub">From cloud-soft sponges to rich ganache, every recipe is perfected over dozens of batches and only the finest local ingredients.</p>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card reveal">
+      <div class="menu-card-img" style="background: linear-gradient(135deg,#f7ddd3,#f2c9b8)">
+        🎂
+        <span class="card-tag">Bestseller</span>
+      </div>
+      <div class="menu-card-body">
+        <h3>Classic Wedding Tier</h3>
+        <p>Three-layer vanilla sponge with rose-water buttercream and edible gold leaf accents. Feeds 60–80 guests.</p>
+        <div class="menu-card-footer">
+          <span class="price">₹4,500</span>
+          <button class="order-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-img" style="background: linear-gradient(135deg,#e8b4a0,#d4856a)">
+        🍫
+        <span class="card-tag">Fan Favourite</span>
+      </div>
+      <div class="menu-card-body">
+        <h3>Belgian Chocolate Dream</h3>
+        <p>Dark chocolate ganache layered with salted caramel and crunchy praline. Rich, indulgent, unforgettable.</p>
+        <div class="menu-card-footer">
+          <span class="price">₹1,299</span>
+          <button class="order-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-img" style="background: linear-gradient(135deg,#fde8c8,#f5c885)">
+        🍰
+      </div>
+      <div class="menu-card-body">
+        <h3>Lemon Blueberry Cloud</h3>
+        <p>Zesty lemon curd with fresh blueberry compote and whipped mascarpone cream. Light and refreshing.</p>
+        <div class="menu-card-footer">
+          <span class="price">₹999</span>
+          <button class="order-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-img" style="background: linear-gradient(135deg,#f2c9b8,#e8906a)">
+        🎨
+        <span class="card-tag">Custom</span>
+      </div>
+      <div class="menu-card-body">
+        <h3>Personalised Birthday Cake</h3>
+        <p>Fully customisable — your favourite flavour, colours, and theme. Perfect for a birthday surprise.</p>
+        <div class="menu-card-footer">
+          <span class="price">from ₹899</span>
+          <button class="order-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-img" style="background: linear-gradient(135deg,#d8f0d8,#a8d8a8)">
+        🌿
+      </div>
+      <div class="menu-card-body">
+        <h3>Eggless Matcha Bliss</h3>
+        <p>Japanese matcha and white chocolate ganache — perfect for those who prefer eggless and light options.</p>
+        <div class="menu-card-footer">
+          <span class="price">₹1,150</span>
+          <button class="order-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-img" style="background: linear-gradient(135deg,#e8d0f0,#c89ad4)">
+        💐
+      </div>
+      <div class="menu-card-body">
+        <h3>Floral Anniversary Cake</h3>
+        <p>Ombre lavender frosting adorned with hand-piped sugar flowers. A romantic centrepiece for your celebration.</p>
+        <div class="menu-card-footer">
+          <span class="price">₹2,200</span>
+          <button class="order-btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-inner">
+    <div>
+      <div class="section-eyebrow">How It Works</div>
+      <h2 class="section-title reveal">From Batter <br>to <em style="font-style:italic">Your Table</em></h2>
+      <p class="section-sub reveal">We believe every cake should be a personal experience — baked fresh, never frozen, and delivered with care.</p>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h4>Choose Your Cake</h4>
+            <p>Browse our menu or describe your vision. We have 42+ flavours and fully custom options available.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h4>We Bake Fresh</h4>
+            <p>Your cake is baked from scratch 24 hours before delivery using only premium, locally-sourced ingredients.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h4>Artisan Decoration</h4>
+            <p>Our pastry artists hand-pipe every detail. No shortcuts, no shortcuts — just pure craftsmanship.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h4>Delivered with Care</h4>
+            <p>Temperature-controlled delivery to your door. We guarantee your cake arrives picture-perfect.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="process-visual reveal">🧁</div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="gallery-header reveal">
+    <div class="section-eyebrow">Our Work</div>
+    <h2 class="section-title">Creations We're <em style="font-style:italic">Proud Of</em></h2>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item big g1">🎂</div>
+    <div class="gallery-item g2">🍰</div>
+    <div class="gallery-item g3">🧁</div>
+    <div class="gallery-item g4">🎂</div>
+    <div class="gallery-item g5">🍫</div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="reviews">
+  <div class="testimonials-header reveal">
+    <div class="section-eyebrow">Sweet Words</div>
+    <h2 class="section-title">What Our <em style="font-style:italic">Clients Say</em></h2>
+    <p class="section-sub">Hundreds of happy customers — and counting.</p>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"The wedding cake was absolutely breathtaking. Every guest asked who made it. The flavour was even more incredible than the design!"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">👰</div>
+        <div>
+          <div class="reviewer-name">Priya Mehta</div>
+          <div class="reviewer-role">Wedding Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Ordered a custom birthday cake with my daughter's favourite cartoon. They nailed every detail! She was in tears of joy. Will order again."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">🧑‍👧</div>
+        <div>
+          <div class="reviewer-name">Arjun Sharma</div>
+          <div class="reviewer-role">Birthday Order</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"The Belgian Chocolate Dream lives up to its name. Hands-down the best cake I've ever tasted. Fast delivery, perfect condition. 10/10!"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">✨</div>
+        <div>
+          <div class="reviewer-name">Sneha Patel</div>
+          <div class="reviewer-role">Regular Customer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER FORM -->
+<section class="order" id="order">
+  <div class="order-inner reveal">
+    <div class="section-eyebrow" style="text-align:center">Place Your Order</div>
+    <h2 class="section-title" style="text-align:center">Let's Create <em style="font-style:italic">Your Cake</em></h2>
+    <p class="section-sub" style="margin:0 auto; text-align:center">Fill in your details and we'll get in touch within 2 hours to confirm your order and customisations.</p>
+    <form class="order-form" action="https://formspree.io/f/xyzabcde" method="POST">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="Priya Mehta" required>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+91 98765 43210" required>
+      </div>
+      <div class="form-group">
+        <label>Cake Type</label>
+        <select required>
+          <option value="">Select a cake...</option>
+          <option>Classic Wedding Tier</option>
+          <option>Belgian Chocolate Dream</option>
+          <option>Lemon Blueberry Cloud</option>
+          <option>Personalised Birthday Cake</option>
+          <option>Eggless Matcha Bliss</option>
+          <option>Floral Anniversary Cake</option>
+          <option>Something Custom...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Delivery Date</label>
+        <input type="date" required>
+      </div>
+      <div class="form-group full">
+        <label>Special Instructions</label>
+        <textarea placeholder="Tell us about your vision — flavour, theme, message on the cake, number of portions..."></textarea>
+      </div>
+      <div class="form-submit">
+        <button type="submit">Send My Order Request ✦</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="nav-logo">Yummy<span style="color:var(--blush);font-style:italic">Bakes</span></span>
+      <p>Artisan cakes baked with love in Ahmedabad. Every YummyBakes creation is a labour of joy — from our kitchen to your table.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Menu</h5>
+      <ul>
+        <li><a href="#">Wedding Cakes</a></li>
+        <li><a href="#">Birthday Cakes</a></li>
+        <li><a href="#">Custom Orders</a></li>
+        <li><a href="#">Eggless Options</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Studio</h5>
+      <ul>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">Reviews</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="#">📍 Ahmedabad, Gujarat</a></li>
+        <li><a href="#">📞 +91 98765 43210</a></li>
+        <li><a href="#">📸 Instagram</a></li>
+        <li><a href="#">💬 WhatsApp Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 YummyBakes. All rights reserved.</span>
+    <span>Made with 🍰 in Ahmedabad</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Navbar shadow on scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+  });
+
+  // Mobile nav
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('mobileNav').classList.add('open');
+  });
+  document.getElementById('closeNav').addEventListener('click', closeMobileNav);
+  function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = '✓ Request Received! We\'ll call you soon.';
+    btn.style.background = '#2a7a2a';
+    btn.disabled = true;
+  }
+
+  // Set minimum date to today
+  const dateInput = document.querySelector('input[type="date"]');
+  if (dateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
+  }
+</script>
+</body>
+</html>
