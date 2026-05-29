@@ -955,43 +955,105 @@
 <!-- ORDER FORM -->
 <section class="order" id="order">
   <div class="order-inner reveal">
-    <div class="section-eyebrow" style="text-align:center">Place Your Order</div>
-    <h2 class="section-title" style="text-align:center">Let's Create <em style="font-style:italic">Your Cake</em></h2>
-    <p class="section-sub" style="margin:0 auto; text-align:center">Fill in your details and we'll get in touch within 2 hours to confirm your order and customisations.</p>
-    <form class="order-form" action="https://formspree.io/f/xyzabcde" method="POST">
-      <div class="form-group">
-        <label>Your Name</label>
-        <input type="text" placeholder="Priya Mehta" required>
+
+    <!-- FORM VIEW -->
+    <div id="formView">
+      <div class="section-eyebrow" style="text-align:center">Place Your Order</div>
+      <h2 class="section-title" style="text-align:center">Let's Create <em style="font-style:italic">Your Cake</em></h2>
+      <p class="section-sub" style="margin:0 auto; text-align:center">Fill in your details and we'll get in touch within 2 hours to confirm your order and customisations.</p>
+
+      <form class="order-form" id="orderForm">
+        <!-- ✅ Replace YOUR_ACCESS_KEY below with your key from web3forms.com (free, instant) -->
+        <input type="hidden" name="access_key" value="8ca102cd-758c-4440-b567-a34bd279f6ad">
+        <input type="hidden" name="subject" value="🎂 New YummyBakes Order Inquiry!">
+        <input type="hidden" name="from_name" value="YummyBakes Website">
+        <input type="hidden" name="redirect" value="false">
+
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" placeholder="Priya Mehta" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="cake">Cake Type</label>
+          <select id="cake" name="cake_type" required>
+            <option value="">Select a cake...</option>
+            <option>Classic Wedding Tier</option>
+            <option>Belgian Chocolate Dream</option>
+            <option>Lemon Blueberry Cloud</option>
+            <option>Personalised Birthday Cake</option>
+            <option>Eggless Matcha Bliss</option>
+            <option>Floral Anniversary Cake</option>
+            <option>Something Custom...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="date">Delivery Date</label>
+          <input type="date" id="date" name="delivery_date" required>
+        </div>
+        <div class="form-group">
+          <label for="budget">Budget Range</label>
+          <select id="budget" name="budget">
+            <option value="">Select budget...</option>
+            <option>Under ₹1,000</option>
+            <option>₹1,000 – ₹2,500</option>
+            <option>₹2,500 – ₹5,000</option>
+            <option>₹5,000+</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="message">Special Instructions</label>
+          <textarea id="message" name="message" placeholder="Tell us about your vision — flavour, theme, message on the cake, number of portions..."></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" id="submitBtn">
+            <span id="btnText">Send My Order Request ✦</span>
+            <span id="btnLoader" style="display:none">⏳ Sending...</span>
+          </button>
+          <p id="formError" style="display:none; color:#c0392b; margin-top:1rem; font-size:0.85rem; text-align:center;">
+            ⚠️ Something went wrong. Please try again or WhatsApp us directly.
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <!-- ✅ THANK YOU VIEW (shown after successful submit) -->
+    <div id="thankYouView" style="display:none; text-align:center; padding:3rem 1rem;">
+      <div style="font-size:5rem; margin-bottom:1.5rem; animation:fadeUp 0.6s ease both;">🎂</div>
+      <div class="section-eyebrow" style="text-align:center;">Order Received!</div>
+      <h2 class="section-title" style="text-align:center;">Thank You, <span id="customerName" style="color:var(--dusty-rose); font-style:italic;">Friend</span>!</h2>
+      <p class="section-sub" style="margin:1rem auto 2rem; text-align:center; max-width:480px;">
+        Your order inquiry has been sent successfully! 🎉 Our team will call you within <strong>2 hours</strong> to confirm all the details and get baking!
+      </p>
+      <div style="display:flex; flex-direction:column; gap:1rem; align-items:center; max-width:380px; margin:0 auto;">
+        <div style="background:white; border-radius:8px; padding:1.4rem 2rem; width:100%; box-shadow:0 4px 20px rgba(61,35,20,0.08); text-align:left;">
+          <div style="font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:0.6rem; font-family:'Jost',sans-serif;">What happens next?</div>
+          <div style="font-size:0.88rem; color:var(--text); line-height:2;">
+            📞 We call you within 2 hours<br>
+            ✅ Confirm your cake & delivery details<br>
+            💰 Payment & booking confirmed<br>
+            🎂 We bake fresh just for you!
+          </div>
+        </div>
+        <a href="https://wa.me/919876543210?text=Hi%20YummyBakes!%20I%20just%20submitted%20an%20order%20inquiry%20on%20your%20website."
+           target="_blank"
+           style="display:flex; align-items:center; justify-content:center; gap:0.6rem; background:#25D366; color:white; padding:0.9rem 2rem; border-radius:2px; text-decoration:none; font-size:0.85rem; letter-spacing:0.1em; text-transform:uppercase; width:100%; font-family:'Jost',sans-serif;">
+          💬 Also Message on WhatsApp
+        </a>
+        <button onclick="resetForm()"
+          style="background:none; border:1.5px solid var(--dusty-rose); color:var(--dusty-rose); padding:0.8rem 2rem; border-radius:2px; font-family:'Jost',sans-serif; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; width:100%; transition:all 0.3s;">
+          ← Place Another Order
+        </button>
       </div>
-      <div class="form-group">
-        <label>Phone Number</label>
-        <input type="tel" placeholder="+91 98765 43210" required>
-      </div>
-      <div class="form-group">
-        <label>Cake Type</label>
-        <select required>
-          <option value="">Select a cake...</option>
-          <option>Classic Wedding Tier</option>
-          <option>Belgian Chocolate Dream</option>
-          <option>Lemon Blueberry Cloud</option>
-          <option>Personalised Birthday Cake</option>
-          <option>Eggless Matcha Bliss</option>
-          <option>Floral Anniversary Cake</option>
-          <option>Something Custom...</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Delivery Date</label>
-        <input type="date" required>
-      </div>
-      <div class="form-group full">
-        <label>Special Instructions</label>
-        <textarea placeholder="Tell us about your vision — flavour, theme, message on the cake, number of portions..."></textarea>
-      </div>
-      <div class="form-submit">
-        <button type="submit">Send My Order Request ✦</button>
-      </div>
-    </form>
+    </div>
+
   </div>
 </section>
 
@@ -1056,20 +1118,66 @@
   document.getElementById('closeNav').addEventListener('click', closeMobileNav);
   function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
 
-  // Form submit
-  function handleSubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.textContent = '✓ Request Received! We\'ll call you soon.';
-    btn.style.background = '#2a7a2a';
-    btn.disabled = true;
-  }
-
   // Set minimum date to today
   const dateInput = document.querySelector('input[type="date"]');
   if (dateInput) {
     const today = new Date().toISOString().split('T')[0];
     dateInput.min = today;
+  }
+
+  // ✅ Web3Forms submission
+  document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnLoader = document.getElementById('btnLoader');
+    const formError = document.getElementById('formError');
+    const customerName = document.getElementById('name').value.split(' ')[0];
+
+    // Show loading state
+    btnText.style.display = 'none';
+    btnLoader.style.display = 'inline';
+    btn.disabled = true;
+    formError.style.display = 'none';
+
+    try {
+      const formData = new FormData(this);
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        // Show thank you view
+        document.getElementById('formView').style.display = 'none';
+        document.getElementById('customerName').textContent = customerName || 'Friend';
+        document.getElementById('thankYouView').style.display = 'block';
+        document.getElementById('thankYouView').style.animation = 'fadeUp 0.6s ease both';
+        // Scroll to thank you
+        document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (err) {
+      // Show error
+      btnText.style.display = 'inline';
+      btnLoader.style.display = 'none';
+      btn.disabled = false;
+      formError.style.display = 'block';
+    }
+  });
+
+  // Reset form back to empty state
+  function resetForm() {
+    document.getElementById('orderForm').reset();
+    document.getElementById('thankYouView').style.display = 'none';
+    document.getElementById('formView').style.display = 'block';
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('btnText').style.display = 'inline';
+    document.getElementById('btnLoader').style.display = 'none';
+    document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
   }
 </script>
 </body>
